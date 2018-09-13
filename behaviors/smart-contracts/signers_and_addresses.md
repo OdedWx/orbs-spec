@@ -1,23 +1,29 @@
 # Signers and Addresses
 > A signer scheme determines the way a transaction issigned and the mapping to a public address.
 
-## Adresses and accounts
-In Orbs platform there is no notation of a native account only of an address. Accounts or other signatrue based databases can be implemented by using the public address as the key for the database. 
+## Addresses and accounts
+In Orbs platform there is no notation of a native account only of an address. Accounts or other signature based databases can be implemented by using the public address as the key for the database. 
 
 ## SDK Functions
 
 #### `GetSignerAddress()`
-> Returns the adddress of transaction signer. 
+> Returns the address of transaction signer. 
 
 #### `GetCallerAddress()`
-> Returns the adddress of the function caller.
+> Returns the address of the function caller.
 * If the caller is a transaction, then CallerAddress = SignerAddress
-* If the caller is a smart contractm then CallerAddress = SHA256(contract_name)
-* If the caller is a system call then - TBD.
+* If the caller is a smart contract then CallerAddress = `SmartContractCaller` address.
+* If the caller is a system call then CallerAddress = `SmartContractCaller` address, with contract_name = "system"
 
+#### `CheckValidAddresFormat(Address)`
+> Performs static checks on an address argument to validate that it has a valid format based on the scheme. 
+* Note: A valid format does not indicate that the address corresponds to a valid public key.
+* Verifies network_type matches teh network.
+
+#### `GetAddressScheme(Address)`
+> Returns the address scheme used by the address.
 
 <!-- TBD 
-#### `GetSignerScheme()`
 #### `GetSigner()`
 #### `IsSignerValid()`
 #### `VerifyNetworkType(Address)`
@@ -34,25 +40,38 @@ If `token` <= BalancesDB[`GetCallerAddress()`] then
 
 
 ## Signature schemes
+> Determines the signature validation and addressing scheme
+* Address = {scheme, network_type, RIPEMD160(SHA256(signer))}
 
 #### `EdDSA01Signer`
-> Ed25519 based signatrue scheme
-* Parameters: 
-  * network_type 
-  * public_key - Ed25519 public key
+> Ed25519 based signature scheme
 * Signature = Ed25519Signature(private_key, txhash)
-  * txhash = SHA256(Transaction) <!-- TBD - relation to the tarnsaction txhash - should it incldue the signature>
+  * txhash = SHA256(Transaction) <!-- TBD - should we align txhash not to include the signature?  
 * Signer checks
   * network_type matches the network
   * Valid signature
-* Address = {scheme, network_type, SHA256(signer)}
 
 #### `SmartContractCaller`
 > Set when a function is called by a smart contract, can't be sent in a transaction
-* Parameters: 
-  * network_type 
-  * smart contract name
-* Address = {scheme, network_type, SHA256(contract_name)}
 
-#### `
+#### `SystemCaller`
+> Set when a function is called by a system, can't be sent in a transaction
+* When a call was initiated by a system call, `GetSignerAddress()` return a `SystemCaller` scheme.
 
+## Text encoding scheme
+1. Start with a 22-byte address:
+  * Network ID: Address[21]
+  * Account ID: Address[20-0]
+   
+2. Calculate the CRC32 checksum of the address. Construct the 26-byte binary representation of the address {Network ID, Account ID, checksum}
+   
+3. Encode the raw public address to Base58:
+    Each of the following address parts is BASE58 encoded separately:
+    a. Network ID
+    | Network  | Value | Value (hex) |
+    | :------: | :---: | :---------: |
+    | Main net | M     | 4d          |
+    | Test net | T     | 54          |
+    
+    b. {Account ID, Checksum}
+    
