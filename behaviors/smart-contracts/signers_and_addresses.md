@@ -4,6 +4,7 @@
 ## Addresses and accounts
 In Orbs platform there is no notation of a native account only of an address. Accounts or other signature based databases can be implemented by using the public address as the key for the database. 
 
+&nbsp;
 ## SDK Functions
 
 #### `GetSignerAddress()`
@@ -29,16 +30,20 @@ In Orbs platform there is no notation of a native account only of an address. Ac
 #### `VerifyNetworkType(Address)`
 ---> 
 
+&nbsp;
 ## Usage Examples
-#### Token get_my_balance()
-Return BalancesDB[`GetCallerAddress()`]
-
 #### Token transfer
-If `token` <= BalancesDB[`GetCallerAddress()`] then
-  BalancesDB[target] += tokens
-  BalancesDB[`GetCallerAddress()`] -= tokens
+If `tokens` <= BalancesDB[`GetCallerAddress()`] then
+  BalancesDB[`GetCallerAddress()`] -= `tokens`
+  BalancesDB[target] += `tokens`
 
+#### System and transaction initiated call
+If `GetAddressScheme(GetSignerAddress())` = SYSTEM_CALLER then
+  Print "Call initiated by a system call"
+Else
+  Print "Call initated by a transaction"
 
+&nbsp;
 ## Signature schemes
 > Determines the signature validation and addressing scheme
 * Address = {scheme, network_type, RIPEMD160(SHA256(signer))}
@@ -56,8 +61,9 @@ If `token` <= BalancesDB[`GetCallerAddress()`] then
 
 #### `SystemCaller`
 > Set when a function is called by a system, can't be sent in a transaction
-* When a call was initiated by a system call, `GetSignerAddress()` return a `SystemCaller` scheme.
+* When a call was initiated by a system call, `GetSignerAddress()` return a `SystemCaller` address.
 
+&nbsp;
 ## Text encoding scheme
 1. Start with a 22-byte address:
   * Network ID: Address[21]
