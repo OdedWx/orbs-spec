@@ -55,7 +55,7 @@ Else
 #### `EdDSA01Signer`
 > Ed25519 based signature scheme
 * Signature = Ed25519Signature(private_key, txhash)
-  * txhash = SHA256(Transaction) <!-- TBD - should we align txhash not to include the signature?  
+  * txhash = SHA256(Transaction)  
 * Signer checks
   * network_type matches the network
   * Valid signature
