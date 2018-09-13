@@ -65,7 +65,7 @@ If `token` <= BalancesDB[`GetCallerAddress()`] then
    
 2. Calculate the CRC32 checksum of the address. Construct the 26-byte binary representation of the address {Network ID, Account ID, checksum}
    
-3. Encode the raw public address to Base58:
+3. Encode the raw public address to BASE58:
    Each of the following address parts is BASE58 encoded separately:
 
    a. Network ID
