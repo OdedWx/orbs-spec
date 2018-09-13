@@ -68,10 +68,11 @@ If `token` <= BalancesDB[`GetCallerAddress()`] then
 3. Encode the raw public address to Base58:
     Each of the following address parts is BASE58 encoded separately:
     a. Network ID
-    | Network  | Value | Value (hex) |
-    | :------: | :---: | :---------: |
-    | Main net | M     | 4d          |
-    | Test net | T     | 54          |
+    
+| Network  | Value | Value (hex) |
+| :------: | :---: | :---------: |
+| Main net | M     | 4d          |
+| Test net | T     | 54          |
     
     b. {Account ID, Checksum}
     
