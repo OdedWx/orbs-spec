@@ -74,5 +74,6 @@ If `token` <= BalancesDB[`GetCallerAddress()`] then
 | Main net | M     | 4d          |
 | Test net | T     | 54          |
     
+    
     b. {Account ID, Checksum}
     
