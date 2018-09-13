@@ -33,15 +33,19 @@ In Orbs platform there is no notation of a native account only of an address. Ac
 &nbsp;
 ## Usage Examples
 #### Token transfer
+```
 If `tokens` <= BalancesDB[`GetCallerAddress()`] then
   BalancesDB[`GetCallerAddress()`] -= `tokens`
   BalancesDB[target] += `tokens`
+```
 
 #### System and transaction initiated call
+```
 If `GetAddressScheme(GetSignerAddress())` = SYSTEM_CALLER then
   Print "Call initiated by a system call"
 Else
   Print "Call initated by a transaction"
+```
 
 &nbsp;
 ## Signature schemes
